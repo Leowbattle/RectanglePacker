@@ -34,11 +34,25 @@ namespace RectanglePacker
 							packer.Clear();
 							for (int i = 0; i < 1000; i++)
 							{
-								var w = random.Next(10, 50);
-								var h = random.Next(10, 50);
-								packer.Add(new Size(w, h));
+								int w;
+								int h;
+								if (random.Next(0, 2) == 0)
+								{
+									w = 96;
+									h = 48;
+								}
+								else
+								{
+									w = 48;
+									h = 96;
+								}
+
+								if (packer.Add(new Size(w, h)) == null)
+								{
+									//break;
+								}
 							}
-							Console.WriteLine($"{packer.AllocatedRectangles.Count()}, wasted space = {packer.AllocatedArea / (float)(packer.Size.Width * packer.Size.Height) * 100}%");
+							Console.WriteLine($"{packer.AllocatedRectangles.Count()}, wasted space = {packer.FreeArea / (float)(packer.Size.Width * packer.Size.Height) * 100}%");
 
 							break;
 						default:
@@ -50,18 +64,18 @@ namespace RectanglePacker
 				SDL.SDL_RenderClear(Renderer);
 
 				var rect = new Rectangle(Point.Empty, packer.Size);
-				DrawRect(rect, Color.Green);
+				DrawRect(rect, Color.FromArgb(0xa8, 0x25, 0x20));
 
 				foreach (var allocatedRect in packer.AllocatedRectangles)
 				{
 					allocatedRect.Inflate(-1, -1);
-					DrawRect(allocatedRect, Color.Red);
+					DrawRect(allocatedRect, Color.FromArgb(0x60, 0xf5, 0x94));
 				}
 
 				foreach (var freeRect in packer.FreeRectangles)
 				{
 					freeRect.Inflate(-1, -1);
-					DrawRect(freeRect, Color.Blue);
+					DrawRect(freeRect, Color.FromArgb(0xf5, 0x65, 0x5f));
 				}
 
 				SDL.SDL_RenderPresent(Renderer);

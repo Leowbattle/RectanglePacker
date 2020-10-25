@@ -91,7 +91,7 @@ namespace RectanglePacker
 				freeRectangles.Add(new Rectangle(rect.X, rect.Y + size.Height, rect.Width, yRemainder));
 			}
 
-			freeRectangles.Sort((r1, r2) => r1.Height - r2.Height);
+			//freeRectangles.Sort((r1, r2) => r1.Height - r2.Height);
 
 			Rectangle result = new Rectangle(rect.Location, size);
 			allocatedRectangles.Add(result);
